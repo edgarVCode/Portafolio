@@ -54,6 +54,45 @@ const co=new IntersectionObserver(entries=>{
 },{threshold:0.5});
 document.querySelectorAll('[data-count]').forEach(el=>co.observe(el));
 
+// MASCOTA SOPORTE TÉCNICO
+const mascot = document.getElementById('mascot');
+const mBubble = document.getElementById('mBubble');
+const mText = document.getElementById('mText');
+const mFrases = [
+  '¿Ya intentaste reiniciar?',
+  '¿Y si lo apagamos y prendemos?',
+  '¿Está conectado el cable?',
+  'Prueba en modo incógnito',
+  'Borra caché y cookies',
+  '¿Tienes internet?',
+  'En mi máquina sí funciona 🤷',
+  'Actualiza el navegador',
+  'Ctrl + Alt + Supr, a ver',
+  '¿Probaste apagar el router?',
+  'Manda captura del error',
+  'Dale F5 con fe'
+];
+let mLast = -1, mTimer = null, mNext = null;
+function mShow(){
+  clearTimeout(mNext);
+  let i;
+  do { i = Math.floor(Math.random()*mFrases.length); } while(i===mLast && mFrases.length>1);
+  mLast = i;
+  mText.textContent = mFrases[i];
+  mBubble.classList.add('show');
+  clearTimeout(mTimer);
+  mTimer = setTimeout(()=>{
+    mBubble.classList.remove('show');
+    mNext = setTimeout(mShow, 1200 + Math.random()*700);
+  }, 3400);
+}
+if(mascot){
+  mascot.addEventListener('click', mShow);
+  mascot.addEventListener('mouseenter',()=>document.body.classList.add('ch'));
+  mascot.addEventListener('mouseleave',()=>document.body.classList.remove('ch'));
+  mNext = setTimeout(mShow, 1500);
+}
+
 // SMOOTH SCROLL
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{ const t=document.querySelector(a.getAttribute('href')); if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});} });
